@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class NewsCategoryUpdateRequest extends FormRequest
+class NewsCategoryCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,6 @@ class NewsCategoryUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        //retur auth()->check();
         return true;
     }
 

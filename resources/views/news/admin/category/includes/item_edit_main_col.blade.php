@@ -15,7 +15,7 @@
               <label for="title">Заголовок</label>
               <input type="text" name="title"
                     id="title"
-                    value="{{ old('parent_id', $item->title) }}"
+                    value="{{ old('title', $item->title) }}"
                     class="form-control"
                     minlength="3"
                     required>
@@ -24,8 +24,8 @@
               <label for="slug">Идентификатор</label>
               <input type="text" name="slug"
                     id="slug"
-                    value="{{ old('parent_id', $item->slug) }}"
-                    class="form-control">
+                    value="{{ old('slug', $item->slug) }}"
+                    class="form-control" >
             </div>
             <div class="form-group">
               <label for="parent_id">Родитель</label>

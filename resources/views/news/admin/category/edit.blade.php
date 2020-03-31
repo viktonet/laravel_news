@@ -4,16 +4,23 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-12">
-      <form action="{{ route('news.admin.category.update', $item->id) }}" method="post">
+      @if($item->exists)
+        <form action="{{ route('news.admin.category.update', $item->id) }}" method="post">
         @method('PATCH')
+      @else
+        <form action="{{ route('news.admin.category.store') }}" method="post">
+      @endif
         @csrf
         <div class="container">
           @if($errors->any())
             <div class="row justify-content-center">
-              <div class="alert alert-danger" role=""alert>
-
+              <div class="alert alert-danger" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-lable="close" >
+                  <span aria-hidden="true" class="alert-danger">x</span>
+                </button>
+                  {{ $errors->first() }}
               </div>
-              {!! dd($errors->all(':message')) !!}
+
 
             </div>
           @endif
