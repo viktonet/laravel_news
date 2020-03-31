@@ -35,9 +35,16 @@ $groupData = [
 ];
 
 Route::group($groupData, function(){
-  $methods = ['index', 'edit', 'update', 'create', 'store'];
+  $methods = ['index', 'edit', 'update', 'create', 'store', ];
   Route::resource('category', 'CategoryController')
   -> only($methods)
   -> names('news.admin.category');
+
+  Route::resource('posts', 'PostController')
+  -> except('show')
+  -> names('news.admin.posts');
 });
+
+
+
 //Route::resource('news', 'NewsController')->names('NewsAdmin');

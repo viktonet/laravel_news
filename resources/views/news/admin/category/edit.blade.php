@@ -20,8 +20,6 @@
                 </button>
                   {{ $errors->first() }}
               </div>
-
-
             </div>
           @endif
           @if(session('success'))
