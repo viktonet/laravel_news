@@ -5,7 +5,7 @@
   <div class="row justify-content-center">
     <div class="col-md-12">
       <div class="container">
-        @include('news.admin.posts.includes.result_messages');
+        @include('news.admin.posts.includes.result_messages')
           @if($item->exists)
             <form action="{{ route('news.admin.posts.update', $item->id) }}" method="post">
             @method('PATCH')

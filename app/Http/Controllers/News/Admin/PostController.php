@@ -7,10 +7,12 @@ use App\Http\Requests\NewsPostCreateRequest;
 use App\News;
 use App\NewsCategory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+
+
 
 class PostController extends BaseController
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -18,13 +20,14 @@ class PostController extends BaseController
      */
     public function index()
     {
-      $paginator = News::paginate(15);
+      $paginator = News::where('user_id', '=', \Auth::user()->id)->paginate(15);
 
 
       //$categoryList = Newscategory::all();
       //dd($categoryList);
       return view('news.admin.posts.index', compact('paginator'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -33,7 +36,11 @@ class PostController extends BaseController
      */
     public function create()
     {
-        dd(__METHOD__);
+      $item = new News();
+
+      $categoryList = Newscategory::all();
+
+      return view('news.admin.posts.edit', compact('item', 'categoryList'));
     }
 
     /**
@@ -42,9 +49,23 @@ class PostController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(NewsPostCreateRequest $request)
     {
-        dd(__METHOD__);
+      $data = $request->input();
+
+      $item = new News($data);
+      $item->save();
+
+      if($item) {
+        return redirect()
+          ->route('news.admin.posts.edit')
+          ->with(['success' => "Успешно сохранено"]);
+      }else{
+        return back()
+          ->withErrors(['msg' => "Ошибка сохранения"])
+          ->withInput();
+
+      }
     }
 
     /**
@@ -55,7 +76,12 @@ class PostController extends BaseController
      */
     public function show($id)
     {
-        //
+
+      $paginator = News::where('user_id', '=', $id)->paginate(15);
+
+      //$categoryList = Newscategory::all();
+      //dd($categoryList);
+      return view('news.admin.posts.index', compact('paginator'));
     }
 
     /**
@@ -96,14 +122,8 @@ class PostController extends BaseController
 
         $data = $request->all();
 
-        if(empty($data['slug'])){
-          $data['slug'] = Str::slug($data['title']);
-        }
 
-        if(empty($item->published_at) && $data['is_published']){
-          $data['published_at'] = Carbon::now();
-        }
-        
+
         //$data = $request->except(['_method', '_token', 'button']);
         $result = $item->fill($data)->save();
 
@@ -126,6 +146,19 @@ class PostController extends BaseController
      */
     public function destroy($id)
     {
-        dd(__METHOD__, $id);
+      //$result = News::destroy($id);
+
+      //Повне видалення даних з бази
+      $result = News::Find($id)->forceDelete();
+
+      if($result){
+        return redirect()
+          ->route('news.admin.posts.index')
+          ->with(['success' => "Запись id[$id] удалена"]);
+      }else{
+        return back()
+          ->withErrors(['msg' => "Ошибка удаления"])
+          ->withInput();
+      }
     }
 }

@@ -75,7 +75,13 @@
                 </div>
             </div>
         </nav>
-
+        <div class="container">
+        @guest
+      
+        @else
+          @include('layouts.user_menu')
+        @endguest
+      </div>
         <main class="py-4">
             @yield('content')
         </main>

@@ -7,7 +7,6 @@ use App\Http\Requests\NewsCategoryUpdateRequest;
 use App\Http\Requests\NewsCategoryCreateRequest;
 use App\NewsCategory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class CategoryController extends BaseController
 {
@@ -46,9 +45,6 @@ class CategoryController extends BaseController
     public function store(NewsCategoryCreateRequest $request)
     {
         $data = $request->input();
-        if(empty($data['slug'])){
-          $data['slug'] = Str::slug($data['title']);
-        }
 
         $item = new NewsCategory($data);
         $item->save();
@@ -85,6 +81,10 @@ class CategoryController extends BaseController
     public function edit($id)
     {
         $item = NewsCategory::Find($id);
+        $v['title_before'] = $item->title;
+
+        $v['getAttribute'] = $item->getAttribute('title');
+        //dd($v, $item);
         $categoryList = NewsCategory::all();
 
         return view('news.admin.category.edit', compact('item', 'categoryList'));
@@ -109,9 +109,7 @@ class CategoryController extends BaseController
         }
 
         $data = $request->all();
-        if(empty($data['slug'])){
-          $data['slug'] = Str::slug($data['title']);
-        }
+
         //$data = $request->except(['_method', '_token', 'button']);
         $result = $item->fill($data)->save();
 

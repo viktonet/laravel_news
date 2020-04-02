@@ -7,7 +7,7 @@
       <nav>
         <a href="{{ route('news.admin.category.create') }}" class="btn btn-primary">Добавить</a>
       </nav>
-      
+
       <div class="card">
         <div class="card-body">
           <table width="100%">
@@ -27,7 +27,7 @@
                   <a href="{{ route('news.admin.category.edit', $item->id) }}">{{ $item->title }}</a>
                 </td>
                 <td @if(in_array($item->parent_id, [1])) style="colod:#ccc;" @endif>
-                  {{ $item->parent_id }} {{-- $item->parentCategory->title --}}
+                  {{ optional($item->parentCategory)->title }}
                 </td>
               </tr>
             @endforeach

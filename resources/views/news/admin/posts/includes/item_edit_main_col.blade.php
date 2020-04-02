@@ -53,9 +53,6 @@
                     name="category_id"
                     id="category_id"
                     placeholder="Категория">
-                    <option value="0" @if(0 == old('category_id', $item->category_id)) selected @endif>
-                      Нету
-                    </option>
                 @foreach($categoryList as $categoryOption)
 
                   <option value="{{ $categoryOption->id }}" @if($categoryOption->id ==  old('category_id', $item->category_id)) selected @endif>
@@ -64,7 +61,7 @@
                 @endforeach
               </select>
             </div>
-            
+
             <div class="form-check">
               <input type="hidden" name="is_published" value="0">
               <input type="checkbox" name="is_published"

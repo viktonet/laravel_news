@@ -17,8 +17,27 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/user', 'HomeController@index')->name('user');
+$methods = ['index', 'edit', 'update', ];
+Route::resource('/user', 'User\UserController')->only($methods)->names('user');
 
+Route::prefix('user')->group(function(){
+  $groupData = [
+    'namespace' => 'News\Admin',
+    'prefix' => 'news',
+  ];
+
+
+  Route::group($groupData, function(){
+    $methods = ['index', 'edit', 'update', 'create', 'store', ];
+    Route::resource('category', 'CategoryController')
+    -> only($methods)
+    -> names('news.admin.category');
+
+    Route::resource('posts', 'PostController')
+    -> names('news.admin.posts');
+  });
+});
 //Админка сайта Voyager
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
@@ -29,21 +48,9 @@ Route::group(['namespace' => 'News', 'prefix' => 'news'], function(){
   Route::resource('posts', 'PostController') -> names('news.post');
 });
 //Админка пользователя новостей
-$groupData = [
-  'namespace' => 'News\Admin',
-  'prefix' => 'user/news',
-];
 
-Route::group($groupData, function(){
-  $methods = ['index', 'edit', 'update', 'create', 'store', ];
-  Route::resource('category', 'CategoryController')
-  -> only($methods)
-  -> names('news.admin.category');
 
-  Route::resource('posts', 'PostController')
-  -> except('show')
-  -> names('news.admin.posts');
-});
+
 
 
 

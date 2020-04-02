@@ -4,6 +4,7 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-12">
+      @include('news.admin.posts.includes.result_messages')
       <nav>
         <a href="{{ route('news.admin.posts.create') }}" class="btn btn-primary">Написать</a>
       </nav>
