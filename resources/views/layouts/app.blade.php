@@ -77,7 +77,7 @@
         </nav>
         <div class="container">
         @guest
-      
+
         @else
           @include('layouts.user_menu')
         @endguest

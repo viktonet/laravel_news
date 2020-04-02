@@ -43,10 +43,13 @@ Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });
 
-//Вивод новостей
-Route::group(['namespace' => 'News', 'prefix' => 'news'], function(){
-  Route::resource('posts', 'PostController') -> names('news.post');
-});
+
+  Route::resource('news/comments', 'News\CommentsController') ->only(['index','store'])->names('news.comments');
+
+    Route::resource('news', 'News\PostController') ->only(['index','show'])->names('news');
+
+  Route::resource('news/category', 'News\CategoryController') ->only(['index','show'])->names('category');
+
 //Админка пользователя новостей
 
 
