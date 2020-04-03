@@ -19,7 +19,7 @@
               @foreach ($paginator as $post)
                 <tr @if(!$post->is_published) style="background-color: #ccc" @endif>
                   <td>{{ $post->id }}</td>
-                  <td>{{ $post->user->name }}</td>
+                  <td>@if($post->user->name) {{ $post->user->name  }} @endif</td>
                   <td>
                     <a href="{{ route('news.show', $post->id) }}">{{ $post->title }}</a>
                   </td>

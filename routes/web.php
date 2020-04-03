@@ -15,13 +15,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+ Auth::routes(['verify' => true]);
+
 
 //Route::get('/user', 'HomeController@index')->name('user');
 $methods = ['index', 'edit', 'update', ];
-Route::resource('/user', 'User\UserController')->only($methods)->names('user');
+Route::resource('/user', 'User\UserController')->only($methods)->names('user')->middleware('verified');
 
-Route::prefix('user')->group(function(){
+Route::prefix('user')->middleware('verified')->group(function(){
   $groupData = [
     'namespace' => 'News\Admin',
     'prefix' => 'news',
@@ -44,14 +45,16 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 
+
+//Работа с коментарями к новостям
   Route::resource('news/comments', 'News\CommentsController') ->only(['index','store'])->names('news.comments');
-
+//Работа с новостями
     Route::resource('news', 'News\PostController') ->only(['index','show'])->names('news');
-
+//Категории статей
   Route::resource('news/category', 'News\CategoryController') ->only(['index','show'])->names('category');
 
-//Админка пользователя новостей
-
+//Подписка на новости
+  Route::resource('rss', 'News\NewsRssController') ->only(['index','store','destroy'])->names('rss');
 
 
 

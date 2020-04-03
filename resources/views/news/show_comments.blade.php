@@ -56,7 +56,7 @@ function unswer(id) {
   document.getElementById('dd').innerHTML='<div class = "alert alert-success" role = "alert"><button type="button" class="close" data-dismiss="alert" aria-lable="close" onclick="unswer_off(id);"><span aria-hidden="true">x</span></button>Ваш ответ '+document.getElementById(id).innerHTML+'</div>';
 
   document.getElementById('button').innerHTML = "ответить";
-  
+
 };
 
 function unswer_off(id) {
@@ -114,7 +114,7 @@ function unswer_off(id) {
 @guest
   Коментировать могут пользователи после авторизации
 @else
-  @include('news.admin.posts.includes.result_messages')
+
   <form action="{{ route('news.comments.store') }}" method="post">
   @method('POST')
   @csrf

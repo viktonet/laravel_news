@@ -58,7 +58,7 @@ class PostController extends BaseController
 
       if($item) {
         return redirect()
-          ->route('news.admin.posts.edit')
+          ->route('news.admin.posts.edit',$item->id)
           ->with(['success' => "Успешно сохранено"]);
       }else{
         return back()

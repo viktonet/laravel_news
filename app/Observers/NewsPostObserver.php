@@ -3,7 +3,10 @@
 namespace App\Observers;
 
 use App\News;
+use App\User;
 use Carbon\Carbon;
+use App\Mail\NewsRssSendClass;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class NewsPostObserver
@@ -16,7 +19,9 @@ class NewsPostObserver
      */
     public function created(News $news)
     {
-        //
+      $item = User::Find($news->user_id);
+      //dd($item->email);
+      Mail::to($item->email)->send(new NewsRssSendClass($news));
     }
     public function creating(News $news)
     {
@@ -24,6 +29,7 @@ class NewsPostObserver
       $this->setPublishedAt($news);
       $this->setHtml($news);
       $this->setUser($news);
+
     }
     /**
      * Handle the news "updated" event.
@@ -36,7 +42,7 @@ class NewsPostObserver
     public function updated(News $news)
     {
 
-
+    //
     }
 
     public function updating(News $news)
@@ -50,7 +56,7 @@ class NewsPostObserver
       $needSetPublished = empty($news->published_at) && $news->is_published;
       //
       if($needSetPublished){
-        $news->is_published = Carbon::now();
+        $news->published_at = Carbon::now();
       }
     }
     protected function setSlug(News $news){
