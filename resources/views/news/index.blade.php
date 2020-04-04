@@ -9,23 +9,25 @@
             <table width="100%">
               <thead>
                 <tr>
-                  <th>#</th>
                   <th>Автор</th>
                   <th>Заголовок</th>
                   <th>Дата публикации</th>
+
                 </tr>
               </thead>
               <tbody>
               @foreach ($paginator as $post)
                 <tr @if(!$post->is_published) style="background-color: #ccc" @endif>
-                  <td>{{ $post->id }}</td>
+
                   <td>@if($post->user->name) {{ $post->user->name  }} @endif</td>
                   <td>
                     <a href="{{ route('news.show', $post->id) }}">{{ $post->title }}</a>
                   </td>
                   <td>
                     {{ $post->published_at ? \Carbon\Carbon::parse($post->published_at)->format('d.m H:i') : '' }}
+                    [{{ $post->commentsCount->count() }}]
                   </td>
+
                 </tr>
               @endforeach
               </tbody>

@@ -14,7 +14,7 @@
           <table width="100%">
             <thead>
               <tr>
-                <th>#</th>
+
                 <th>Автор</th>
                 <th>Категория</th>
                 <th>Заголовок</th>
@@ -25,7 +25,6 @@
             @foreach ($paginator as $post)
               @php /** @var \App\NewsCategory $item*/@endphp
               <tr @if(!$post->is_published) style="background-color: #ccc" @endif>
-                <td>{{ $post->id }}</td>
                 <td>{{ $post->user->name }}</td>
                 <td>{{ $post->category->title }}</td>
                 <td>

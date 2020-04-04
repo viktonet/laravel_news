@@ -40,7 +40,7 @@
   <div class = "row justify-content-left ">
 
     <div class = "col-md-2">
-      <button type="submit" class="btn btn-primary" id="button">Добавить</button>
+      <button type="submit" class="btn btn-primary" id="button">Подписаться</button>
     </div>
     <div class = "col-md-6">
       <span id="dd"></span>

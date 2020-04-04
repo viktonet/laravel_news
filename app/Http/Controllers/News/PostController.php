@@ -17,7 +17,16 @@ class PostController extends Controller
      */
     public function index()
     {
-        $paginator = News::where('is_published', 1)->paginate(15);
+
+
+        if(isset($_GET["popular"]) AND $_GET["popular"]=="true"){
+           $whereIn = $this->getMaxComments();
+           $paginator = News::whereIn('id', $whereIn)->paginate(1000);
+        }else{
+          $paginator = News::where('is_published', 1)->paginate(15);
+        }
+        //dd($paginator);
+
         $category_data = Newscategory::all();
 
         $id='';
@@ -39,10 +48,25 @@ class PostController extends Controller
         return view('news.post', compact('item','category_data','id','news_comments'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    function getMaxComments() {
+      $countComments = NewsComments::where('is_published', 1)->pluck('news_id','id');
+      $tmp = array();
+      foreach($countComments as $key=>$val){
+        $tmp[$key]=$val;
+      }
+      $dataCountComm = array_count_values($tmp);
+      arsort($dataCountComm);
+      $txt= [];
+
+      foreach($dataCountComm as $key=>$val){
+        if($val>2){
+          $txt[]=$key;
+
+        }
+
+      }
+      return $txt;
+
+    }
 
 }

@@ -19,4 +19,14 @@ class News extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function comments()
+    {
+        return $this->belongsTo(NewsComments::class);
+    }
+
+    public function commentsCount()
+    {
+        return $this->hasMany(NewsComments::class);
+    }
+
 }
