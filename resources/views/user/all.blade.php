@@ -37,7 +37,7 @@
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->tel }}</td>
                                     <td>{{ $user->date_of_birthday }}</td>
-                                    <td> <a href="{{ route('news.admin.posts.show', $user->id) }}">{{ $countNews }}</a> </td>
+                                    <td> <a href="{{ route('news.admin.posts.show', $user->id) }}">{{ $user->count_news->count() }}</a> </td>
                                     <td>@if(Auth::user()->role_id==1 OR $user->role_id != 1 AND Auth::user()->role_id!=1)
                                       <table>
                                         <tr>
