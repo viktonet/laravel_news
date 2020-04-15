@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\News\Admin;
 
-//use App\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\NewsCategoryUpdateRequest;
 use App\Http\Requests\NewsCategoryCreateRequest;
 use App\NewsCategory;
 use Illuminate\Http\Request;
 
-class CategoryController extends BaseController
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.

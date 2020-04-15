@@ -29,17 +29,31 @@
                                       <th> </th>
                                     </tr>
                                   </thead>
+                                  @foreach ($users as $user)
                                   <tr>
-                                    <td width="40">{{ Auth::user()->id }}</td>
-                                    <td><a href="{{ route('user.edit', Auth::user()->id) }}">{{ Auth::user()->name }}</a></td>
-                                    <td>{{ Auth::user()->surname }}</td>
-                                    <td>{{ Auth::user()->email }}</td>
-                                    <td>{{ Auth::user()->tel }}</td>
-                                    <td>{{ Auth::user()->date_of_birthday }}</td>
-                                    <td> <a href="{{ route('news.admin.posts.show', Auth::user()->id) }}">{{ $countNews }}</a> </td>
-                                  </tr>
-                                </table>
+                                    <td width="40">{{ $user->id }}</td>
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->surname }}</td>
+                                    <td>{{ $user->email }}</td>
+                                    <td>{{ $user->tel }}</td>
+                                    <td>{{ $user->date_of_birthday }}</td>
+                                    <td> <a href="{{ route('news.admin.posts.show', $user->id) }}">{{ $countNews }}</a> </td>
+                                    <td>@if(Auth::user()->role_id==1 OR $user->role_id != 1 AND Auth::user()->role_id!=1)
+                                      <table>
+                                        <tr>
+                                          <td><a class="btn btn-link left" href="{{ route('user.all.edit', $user->id) }}">edit</a></td>
+                                          <td><form method="post" action="{{ route('user.all.destroy', $user->id) }}" >
+                                            @method('DELETE')
+                                            @csrf                                       <button style="display:inline; float: left" type="submit" class="btn btn-link left">DEL</button>
+                                          </form></td>
+                                        </tr>
+                                      </table>
 
+                                    @endif</td>
+                                  </tr>
+                                  @endforeach
+                                </table>
+<a href="{{ route('user.all.create') }}" class="btn btn-primary">Crete user</a>
                             </div>
                         </div>
                         <div class="row justify-content-left">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\News\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\NewsPostUpdateRequest;
 use App\Http\Requests\NewsPostCreateRequest;
 use App\News;
@@ -10,7 +11,7 @@ use Illuminate\Http\Request;
 
 
 
-class PostController extends BaseController
+class PostController extends Controller
 {
 
     /**

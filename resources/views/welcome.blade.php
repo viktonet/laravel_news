@@ -23,7 +23,7 @@
                     <a href="{{ route('news.index') }}" >Статьи</a>
                     <a href="{{ route('news.admin.category.index') }}" >Категории</a>
                     <a href="{{ route('user.index') }}">Login</a>
-
+                  
                 </div>
             </div>
         </div>

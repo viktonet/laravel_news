@@ -5,11 +5,14 @@ namespace App\Http\Controllers\User;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserUpdateRequest;
+use App\Http\Requests\UserCreateRequest;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\News;
 
-class UserController extends Controller
+class AllUsersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,6 +22,7 @@ class UserController extends Controller
     public function index()
     {
       //dd(\Auth::user());
+        $users = User::all();
         $NewsList = $this->AllUserNews(\Auth::user()->id);
         if($NewsList){
           $countNews = count($NewsList);
@@ -27,9 +31,16 @@ class UserController extends Controller
         }
         //News::where('user_id', \Auth::user()->id)->get();
 
-        return view('user.index', compact('countNews'));
+        return view('user.all', compact('countNews','users'));
     }
 
+    public function create()
+    {
+      $item = new User();
+      $create = 1;
+
+      return view('user.edit_all', compact('item','create'));
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -37,18 +48,40 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function store(UserCreateRequest $request)
+    {
+      $data = $request->input();
+      $data['date_of_birthday'] = date("Y-m-d", strtotime($data['date_of_birthday']));
+      $data['email_verified_at'] = now();
+      $data['password'] = Hash::make($data['password']);
+      $item = new User($data);
+      $item->save();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+      if($item) {
+        return redirect()
+          ->route('user.all.edit',$item->id)
+          ->with(['success' => "Успешно сохранено"]);
+      }else{
+        return back()
+          ->withErrors(['msg' => "Ошибка сохранения"])
+          ->withInput();
+
+      }
+    }
+
     public function edit($id)
     {
-        $id==\Auth::user()->id;
+
         $item = User::Find($id);
-        return view('user.edit', compact('item'));
+        if(\Auth::user()->role_id ==1 and \Auth::user()->role_id == $item->role_id OR \Auth::user()->role_id !=1 AND $item->role_id != 1) {
+            return view('user.edit_all', compact('item'));
+        }else{
+          return back()
+            ->withErrors(['msg' => "Ошибка доступа"])
+            ->withInput();
+        }
+
+
     }
 
     /**
@@ -60,7 +93,7 @@ class UserController extends Controller
      */
      public function update(UserUpdateRequest $request, $id)
      {
-         $id = \Auth::user()->id;
+
          $item = User::Find($id);
 
          if(empty($item)){
@@ -71,7 +104,7 @@ class UserController extends Controller
 
          $data = $request->all();
          $data['date_of_birthday'] = date("Y-m-d", strtotime($data['date_of_birthday']));
-         //dd($data);
+
          //$data = $request->except(['_method', '_token', 'button']);
          $result = $item->fill($data)->save();
 
@@ -94,7 +127,17 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+      $result = User::Find($id)->forceDelete();
+
+      if($result){
+        return redirect()
+          ->route('user.all.index')
+          ->with(['success' => "Запись id[$id] удалена"]);
+      }else{
+        return back()
+          ->withErrors(['msg' => "Ошибка удаления"])
+          ->withInput();
+      }
     }
     public function AllUserNews($id)
     {

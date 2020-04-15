@@ -19,8 +19,12 @@ Route::get('/', function () {
 
 
 //Route::get('/user', 'HomeController@index')->name('user');
-$methods = ['index', 'edit', 'update', ];
+$methods = ['index', 'edit', 'update'];
 Route::resource('/user', 'User\UserController')->only($methods)->names('user')->middleware('verified');
+
+Route::resource('/user/all', 'User\AllUsersController')
+-> names('user.all')->middleware('verified');
+
 
 Route::prefix('user')->middleware('verified')->group(function(){
   $groupData = [
@@ -50,14 +54,8 @@ Route::group(['prefix' => 'admin'], function () {
   Route::resource('news/comments', 'News\CommentsController') ->only(['index','store'])->names('news.comments');
 //Работа с новостями
     Route::resource('news', 'News\PostController') ->only(['index','show'])->names('news');
-//Категории статей
+  //Категории статей
   Route::resource('news/category', 'News\CategoryController') ->only(['index','show'])->names('category');
 
 //Подписка на новости
   Route::resource('rss', 'News\NewsRssController') ->only(['index','store','destroy'])->names('rss');
-
-
-
-
-
-//Route::resource('news', 'NewsController')->names('NewsAdmin');
